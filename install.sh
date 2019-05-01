@@ -3,10 +3,12 @@
 _DEBIAN_FRONTEND=$DEBIAN_FRONTEND
 export DEBIAN_FRONTEND=noninteractive
 
-HOME=$(sudo -u $SUDO_USER echo $HOME)
+USER_HOME=$(sudo -u $SUDO_USER echo $HOME)
 
-mkdir $HOME/.ubstemp
-cd $HOME/.ubstemp
+mkdir $USER_HOME/.ubstemp
+cd $USER_HOME/.ubstemp
+
+mkdir $USER_HOME/Projects
 
 #Check -y flag for upgrade and dist-upgrade
 
@@ -21,7 +23,7 @@ wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 dpkg -i google-chrome-stable_current_amd64.deb
 
 #Zsh Setup
-sudo -u $SUDO_USER cp $HOME/.bashrc $HOME/.zshrc
+sudo -u $SUDO_USER cp $USER_HOME/.bashrc $USER_HOME/.zshrc
 # Check about generating zsh default config
 sudo -u $SUDO_USER chsh -s $(which zsh)
 chsh -s $(which zsh)
@@ -31,24 +33,24 @@ sudo -u $SUDO_USER sh -c "$(wget https://raw.githubusercontent.com/robbyrussell/
 #Ruby Install
 sudo -u $SUDO_USER wget -q https://github.com/rbenv/rbenv-installer/raw/master/bin/rbenv-installer -O- | bash
 PATH=$HOME/.rbenv/bin:$PATH
-echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> $HOME/.zshrc # Check
+echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> $USER_HOME/.zshrc # Check
 sudo -u $SUDO_USER rbenv install 2.6.3
 sudo -u $SUDO_USER rbenv global 2.6.3
 
 
 #Node Install
 sudo -u $SUDO_USER wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
-echo 'export NVM_DIR="${XDG_CONFIG_HOME/:-$HOME/.}nvm"' >> $HOME/.zshrc
-echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> $HOME/.zshrc
-echo '[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"' >> $HOME/.zshrc
+echo 'export NVM_DIR="${XDG_CONFIG_HOME/:-$HOME/.}nvm"' >> $USER_HOME/.zshrc
+echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> $USER_HOME/.zshrc
+echo '[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"' >> $USER_HOME/.zshrc
 
 #Virtualenv install
 pip install virtualenv virtualenvwrapper
-sudo -u $SUDO_USER mkdir $HOME/.virtualenvs/
-echo 'export WORKON_HOME=$HOME/.virtualenvs' >> $HOME/.zshrc
-#
-#
-#
+sudo -u $SUDO_USER mkdir $USER_HOME/.virtualenvs/
+echo 'export WORKON_HOME=$HOME/.virtualenvs' >> $USER_HOME/.zshrc
+echo 'export PROJECT_HOME=$HOME/Projects' >> $USER_HOME/.zshrc
+echo 'source /usr/local/bin/virtualenvwrapper.sh' >> $USER_HOME/.zshrc
+
 
 #x86_amd64 Only
 wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | apt-key add -
@@ -59,15 +61,15 @@ apt-get install -y sublime-text steam-installer
 
 
 #GalliumOS packages install and setup
-cp *.list /etc/apt/sources.list.d/
-curl https://apt.galliumos.org/galliumos.gpg | apt-key add
-apt update
-apt dist-upgrade -y
-sed -i 's/900/1/' /etc/apt/preferences.d/galliumos.pref # Test this
-apt dist-upgrade -y
-apt install -y linux-image-galliumos-braswell galliumos-braswell
-apt purge linux*generic
-update-grub
+#cp *.list /etc/apt/sources.list.d/
+#curl https://apt.galliumos.org/galliumos.gpg | apt-key add
+#apt update
+#apt dist-upgrade -y
+#sed -i 's/900/1/' /etc/apt/preferences.d/galliumos.pref # Test this
+#apt dist-upgrade -y
+#apt install -y linux-image-galliumos-braswell galliumos-braswell
+#apt purge linux*generic
+#update-grub
 
 #Crouton chroot only
 # Map shared drives
