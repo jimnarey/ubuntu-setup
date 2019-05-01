@@ -3,6 +3,7 @@
 _DEBIAN_FRONTEND=$DEBIAN_FRONTEND
 export DEBIAN_FRONTEND=noninteractive
 
+HOME=$(sudo -u $SUDO_USER echo $HOME)
 
 mkdir $HOME/.ubstemp
 cd $HOME/.ubstemp
@@ -20,7 +21,7 @@ wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 dpkg -i google-chrome-stable_current_amd64.deb
 
 #Zsh Setup
-sudo -u $SUDO_USER -H $SUDO_USER cp $HOME/.bashrc $HOME/.zshrc
+sudo -u $SUDO_USER cp $HOME/.bashrc $HOME/.zshrc
 # Check about generating zsh default config
 sudo -u $SUDO_USER chsh -s $(which zsh)
 chsh -s $(which zsh)
@@ -28,21 +29,23 @@ sudo -u $SUDO_USER sh -c "$(wget https://raw.githubusercontent.com/robbyrussell/
 # Remove Ruby from prompt
 
 #Ruby Install
-sudo -H $SUDO_USER wget -q https://github.com/rbenv/rbenv-installer/raw/master/bin/rbenv-installer -O- | bash
+sudo -u $SUDO_USER wget -q https://github.com/rbenv/rbenv-installer/raw/master/bin/rbenv-installer -O- | bash
 PATH=$HOME/.rbenv/bin:$PATH
 echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> $HOME/.zshrc # Check
-sudo -H $SUDO_USER rbenv install 2.6.3
-sudo -H $SUDO_USER rbenv global 2.6.3
+sudo -u $SUDO_USER rbenv install 2.6.3
+sudo -u $SUDO_USER rbenv global 2.6.3
 
 
 #Node Install
-sudo -H $SUDO_USER wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
+sudo -u $SUDO_USER wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
 echo 'export NVM_DIR="${XDG_CONFIG_HOME/:-$HOME/.}nvm"' >> $HOME/.zshrc
 echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> $HOME/.zshrc
 echo '[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"' >> $HOME/.zshrc
 
 #Virtualenv install
 pip install virtualenv virtualenvwrapper
+sudo -u $SUDO_USER mkdir $HOME/.virtualenvs/
+echo 'export WORKON_HOME=$HOME/.virtualenvs' >> $HOME/.zshrc
 #
 #
 #
