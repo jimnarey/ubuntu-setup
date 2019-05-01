@@ -5,6 +5,8 @@ export DEBIAN_FRONTEND=noninteractive
 
 USER_HOME=$(sudo -u $SUDO_USER echo $HOME)
 
+echo $USER_HOME
+
 mkdir $USER_HOME/.ubstemp
 cd $USER_HOME/.ubstemp
 
